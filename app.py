@@ -48,3 +48,52 @@ class Top5Movies(Resource):
         for movie in top_5:
             movie['average_rating'] = calc_average_rating(movie)
         return top_5
+
+# API C: Get top 5 movies rated by a specific user
+class Top5UserRatedMovies(Resource):
+    def get(self):
+        user_id = request.args.get("user_id")
+        if not user_id:
+            return {"error": "User ID must be provided."}, 400
+
+        if user_id not in [user["user_id"] for user in users]:
+            return {"error": "User with ID {} not found."}, 404
+
+        user_ratings = []
+        for movie in movies:
+            movie_ratings = movie.get("ratings", [])
+            for rating in movie_ratings:
+                if rating["user_id"] == user_id:
+                    user_ratings.append({"movie": movie, "rating": rating["rating"]})
+                    break
+
+        sorted_movies = sorted(user_ratings, key=lambda x: x["rating"], reverse=True)
+
+        top_5 = sorted_movies[:5]
+        return top_5
+
+
+# API D: Add or update a rating for a movie by a user
+class AddUpdateRating(Resource):
+    def post(self):
+        user_id = request.json.get("user_id")
+        movie_id = request.json.get("movie_id")
+        rating = request.json.get("rating")
+        if not user_id or not movie_id or not rating:
+            return {"error": "User ID, movie ID, and rating must be provided."}, 400
+
+        movie = next((movie for movie in movies if movie["movie_id"] == movie_id), None)
+        if not movie:
+            return {"error": f"Movie with ID {movie_id} not found."}, 404
+
+        user = next((user for user in users if user["user_id"] == user_id), None)
+        if not user:
+            return {"error": f"User with ID {user_id} not found."}, 404
+
+        rating_found = next((rating for rating in movie["ratings"] if rating["user_id"] == user_id), None)
+        if rating_found:
+            rating_found["rating"] = rating
+        else:
+            movie["ratings"].append({"user_id": user_id, "rating": rating})
+
+        return {"message": "Rating updated successfully."}, 200

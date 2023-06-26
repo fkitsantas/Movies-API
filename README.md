@@ -4,8 +4,6 @@ Movies-API is a Python API built using Flask. It provides a series of endpoints 
 
 ## Application Requirements Covered
 
-Based on the source code, the following application requirements are addressed:
-
 1. **Query Movie Data (Api A)**: API endpoint allows consumers to filter and return movie details based on provided criteria. These criteria include:
    - Title or partial title of the movie
    - Year of release

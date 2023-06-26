@@ -1,6 +1,6 @@
 # Movies-API
 
-Movies-API is a Python API built using Flask. It provides a series of endpoints that can be used by external entities (like browsers, mobile apps, or manual API calls) to interact with a stored movie database. The application provides various functionalities like querying movie details based on certain criteria, fetching top-rated movies overall and by specific users, and updating the movie ratings given by a user.
+Movies-API is a RestAPI built using Python and Flask. It provides a series of endpoints that can be used by external entities (like browsers, mobile apps, or manual API calls) to interact with a stored movie database. The application provides various functionalities like querying movie details based on certain criteria, fetching top-rated movies overall and by specific users, and updating the movie ratings given by a user.
 
 ## Application Requirements Covered
 
